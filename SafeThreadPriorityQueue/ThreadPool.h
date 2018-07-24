@@ -32,6 +32,7 @@ class Worker : public Thread {
   Queue * queue_;
 };
 
+/// @remark Start и Stop из разных потоков использовать не рекомендуется
 class ThreadPool {
  public:
   typedef SafeThreadPriorityQueue< Runnable > Queue;
@@ -39,7 +40,16 @@ class ThreadPool {
   typedef Queue::PriorityLevel PriorityLevel;
   typedef std::atomic<bool> AtomicFlag;
 
+  ThreadPool( const ThreadPool &  ) = delete;
+  ThreadPool(       ThreadPool && ) = delete;
+  ThreadPool() = delete;
+  ThreadPool & operator=( const ThreadPool &  ) = delete;
+  ThreadPool & operator=(       ThreadPool && ) = delete;
+
   ThreadPool( size_t size );
+  ~ThreadPool() {
+    Stop();
+  }
 
   bool Enqueue( std::unique_ptr<Runnable> && value, PriorityLevel priority_value );
   void Stop();
@@ -58,6 +68,7 @@ class ThreadPool {
   WorkersVector threadsvect_;
   Queue queue_;
   AtomicFlag must_stop_;
+  AtomicFlag started_;
 };
 
 #endif // THREADPOOL_H
