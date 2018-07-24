@@ -1,0 +1,12 @@
+INPUT(
+./release\main.o
+./release\Bounded_MPMC_queue.o
+./release\SafeThreadPriorityQueue.o
+./release\Runnable.o
+./release\ThreadPool.o
+./release\Thread.o
+./release\PThreadWrapper.o
+./release\Queue.o
+./release\Runnable.o
+./release\SafeThreadPriorityQueue.o
+);

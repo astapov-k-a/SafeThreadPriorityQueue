@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\Bounded_MPMC_queue.o
+./debug\SafeThreadPriorityQueue.o
+./debug\Runnable.o
+./debug\ThreadPool.o
+./debug\Thread.o
+./debug\PThreadWrapper.o
+./debug\Queue.o
+./debug\Runnable.o
+./debug\SafeThreadPriorityQueue.o
+);
