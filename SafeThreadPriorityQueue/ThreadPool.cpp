@@ -64,7 +64,8 @@ bool Worker::Initialize( Queue * ptr ) {
 ThreadPool::ThreadPool( size_t size )
     :  threadsvect_( size ),
        queue_(  ),
-       must_stop_( 0 ) {
+       must_stop_( 0 ),
+       started_( 0 ) {
   RecreateWorkers();
   bool success = InitializeWorkers();
   if ( !success ) printf("Error: workers not initialized.");
@@ -84,6 +85,7 @@ bool ThreadPool::Enqueue(
 
 
 void ThreadPool::Stop( ) {
+  if ( threads_vect().size() == 0 || !started_ ) return;
   SetStopFlag();
   std::atomic_thread_fence(std::memory_order_seq_cst);
   size_t sz = get_threads_vect().size()*4;
@@ -115,11 +117,12 @@ void ThreadPool::SetStopFlag( ) {
 
 
 void ThreadPool::Start( ) {
+  started_ = 1;
   for ( WorkersVector::iterator iteratr = get_threads_vect().begin() ;
         iteratr != get_threads_vect().end();
         ++ iteratr ) {
     (*iteratr)->Start(); // запускаем
-  }
+  }  
 }
 
 void ThreadPool::RecreateWorkers( ) {
